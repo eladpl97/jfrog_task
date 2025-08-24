@@ -22,7 +22,7 @@ jobs:
     env:
       DOCKER_REPO: ${{ secrets.JFROG_DOCKER_REPO }}
       IMAGE_NAME: myApp
-      JF_URL: ${{ secrets.JFROG_REGISTRY_URL }}
+      JF_URL: ${{ secrets.JFROG_URL }}
       NPM_VIRTUAL_REPO: ${{ vars.NPM_VIRTUAL_REPO }}
       DOCKER_BUILD_SUMMARY: false
       DOCKER_BUILD_RECORD_UPLOAD: false

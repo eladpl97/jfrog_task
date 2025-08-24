@@ -54,6 +54,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: [setup]
     steps: 
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Setup JFrog CLI (OIDC)
         uses: jfrog/setup-jfrog-cli@v4
         with:

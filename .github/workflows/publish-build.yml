@@ -28,6 +28,7 @@ jobs:
       DOCKER_BUILD_RECORD_UPLOAD: false
       JFROG_CLI_LOG_LEVEL: DEBUG
       IMAGE_TAG: ${{ github.event.inputs.docker_tag }}
+      JF_REGISTRY: ${{ secrets.JFROG_REGISTRY_URL }}
 
     steps:
     - name: Checkout the repository
@@ -54,16 +55,16 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker build -t ${{ env.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} .
+        docker build -t ${{ env.JF_REGISTRY }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} .
 
     - name: Push Docker image with JFrog CLI
       run: |
-        jf docker push ${{ env.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
-    
+        jf docker push ${{ env.JF_REGISTRY }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+
     - name: Add docker package to build info
       run: |
         jf rt build-docker-create ${{ env.DOCKER_REPO }} --image ${{ env.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
-    
+
     - name: Publish build info
       run: |
         jf rt build-collect-env

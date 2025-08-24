@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DOCKER_REPO: ${{ secrets.JFROG_DOCKER_REPO }}
-      IMAGE_NAME: myApp
+      IMAGE_NAME: my-app
       JF_URL: ${{ secrets.JFROG_URL }}
       NPM_VIRTUAL_REPO: ${{ vars.NPM_VIRTUAL_REPO }}
       DOCKER_BUILD_SUMMARY: false

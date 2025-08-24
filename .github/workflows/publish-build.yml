@@ -43,7 +43,14 @@ jobs:
       run: jf npm-config --global=true --repo-resolve=${{ env.NPM_VIRTUAL_REPO }} --repo-deploy=${{ env.NPM_VIRTUAL_REPO }}
 
     - name: Build webapp
-      run: jf npm ci
+      run: |
+        if [ -f package-lock.json ]; then
+          echo "Lockfile found → using npm ci"
+          jf npm ci
+        else
+          echo "No lockfile → falling back to npm install"
+          jf npm install
+        fi
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3

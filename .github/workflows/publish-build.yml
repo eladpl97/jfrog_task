@@ -1,4 +1,4 @@
-name: Workflow-Task
+name: Workflow-Task-1
 on:
   workflow_dispatch:
     inputs:

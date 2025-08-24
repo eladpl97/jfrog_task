@@ -52,31 +52,18 @@ jobs:
           jf npm install
         fi
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
+    - name: Build Docker image
+      run: |
+        docker build -t ${{ env.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} .
 
-    - name: Authenticate Docker
-      uses: docker/login-action@v3
-      with:
-        registry: ${{ env.JF_URL }}
-        username: ${{ steps.setup-cli.outputs.oidc-user }}
-        password: ${{ steps.setup-cli.outputs.oidc-token }}
-
-    - name: Build the Docker image
-      uses: docker/build-push-action@v6
-      id: build
-      with:
-        push: true
-        context: .
-        platforms: linux/amd64,linux/arm64
-        tags: ${{ env.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
-        provenance: false
-
+    - name: Push Docker image with JFrog CLI
+      run: |
+        jf docker push ${{ env.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+    
     - name: Add docker package to build info
       run: |
-        echo "${{ env.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}@${{ steps.build.outputs.digest }}" > metadata.json
-        jf rt build-docker-create ${{ env.DOCKER_REPO }} --image-file metadata.json
-
+        jf rt build-docker-create ${{ env.DOCKER_REPO }} --image ${{ env.JF_URL }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+    
     - name: Publish build info
       run: |
         jf rt build-collect-env

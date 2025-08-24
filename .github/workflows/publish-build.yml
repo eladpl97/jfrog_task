@@ -26,7 +26,7 @@ env:
   JFROG_CLI_LOG_LEVEL: DEBUG
   IMAGE_TAG: ${{ github.event.inputs.docker_tag }}
   JF_REGISTRY: ${{ secrets.JFROG_REGISTRY_URL }}
-  BUILD_NUMBER: ${{ github.run_id }}
+  BUILD_NUMBER: ${{ github.run_number }}
 
 jobs:
   setup:
@@ -71,7 +71,7 @@ jobs:
         run: |
           jf docker push ${{ env.JF_REGISTRY }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} \
             --build-name=${{ env.IMAGE_NAME }} \
-            --build-number=${{ github.run_id }}
+            --build-number=${{ env.BUILD_NUMBER }}
 
   publish-build:   
     runs-on: ubuntu-latest
@@ -85,8 +85,8 @@ jobs:
 
       - name: Collect env & git for build
         run: |
-          jf rt build-collect-env --build-name="${{ env.IMAGE_NAME }}" --build-number="${{ env.BUILD_NUMBER }}"
-          jf rt build-add-git     --build-name="${{ env.IMAGE_NAME }}" --build-number="${{ env.BUILD_NUMBER }}"
+          jf rt build-collect-env ${{ env.IMAGE_NAME }} ${{ env.BUILD_NUMBER }}
+          jf rt build-add-git ${{ env.IMAGE_NAME }} ${{ env.BUILD_NUMBER }}
 
       - name: Publish build info
         run: jf rt bp "${{ env.IMAGE_NAME }}" "${{ env.BUILD_NUMBER }}"

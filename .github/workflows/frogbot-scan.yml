@@ -26,6 +26,7 @@ jobs:
       - uses: jfrog/frogbot@v2
         with:
           oidc-provider-name: ${{ secrets.OIDC_PROVIDER_NAME }}
+          oidc-audience: repo:eladpl97/jfrog_task:ref:refs/heads/* 
         env:
           JF_URL: ${{ secrets.JFROG_URL }}
           JF_GIT_TOKEN: ${{ secrets.JF_GIT_TOKEN }}

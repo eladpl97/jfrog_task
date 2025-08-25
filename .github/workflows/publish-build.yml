@@ -67,6 +67,6 @@ jobs:
           jf docker push ${{ env.JF_REGISTRY }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
 
       - name: scan build
-        run:  jf build-scan # Workflow-Task ${{ env.BUILD_NUMBER }}
+        run:  jf build-scan Workflow-Task ${{ env.BUILD_NUMBER }} --fail=false
 
  

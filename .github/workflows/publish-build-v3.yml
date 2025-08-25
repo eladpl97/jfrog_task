@@ -64,3 +64,6 @@ jobs:
       - name: Push Docker image with build-info
         run: |
           jf docker push ${{ env.JF_REGISTRY }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} 
+      
+      - name: scan build
+        run:  jf build-scan ${{ env.JFROG_CLI_CI_JOB_ID }} ${{ env.BUILD_NUMBER }}

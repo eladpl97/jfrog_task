@@ -89,19 +89,5 @@ jobs:
 
       - name: Publish build info
         run: jf rt bp "${{ env.IMAGE_NAME }}" "${{ env.BUILD_NUMBER }}"
-  
-  scan-build:
-    runs-on: ubuntu-latest
-    needs: [publish-build]
-    steps:
-      - name: Setup JFrog CLI (OIDC)
-        uses: jfrog/setup-jfrog-cli@v4
-        with:
-          oidc-provider-name: ${{ secrets.OIDC_PROVIDER_NAME }}
-          oidc-audience: repo:eladpl97/jfrog_task:ref:refs/heads/*
-
-      - name: Scan the build with Xray
-        run: |
-          jf build-scan "${{ env.IMAGE_NAME }}" "${{ env.BUILD_NUMBER }}"
 
   

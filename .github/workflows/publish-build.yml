@@ -1,5 +1,7 @@
 name: Workflow-Task
 on:
+  pull_request:
+    types: [closed]
   workflow_dispatch:
     inputs:
       docker_tag:
@@ -69,6 +71,14 @@ jobs:
         run: |
           sed -i -E "s|express\.urlencoded\(\{[[:space:]]*extended:[[:space:]]*true[[:space:]]*\}\)|express.urlencoded({ extended: false })|g" src/index.js
           grep -n "extended: false" src/index.js
+
+      - name: Override IMAGE_TAG if PR merged and contains 'moment'
+        if: github.event.pull_request.merged == true && contains(github.event.pull_request.title, 'moment')
+        run: |
+          echo "IMAGE_TAG=V3" >> $GITHUB_ENV
+
+      - name: Print image tag
+        run: echo "Using IMAGE_TAG=$IMAGE_TAG"
       
       - name: Verify JFrog connectivity
         run: jf rt ping

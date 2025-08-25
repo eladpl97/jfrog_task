@@ -1,4 +1,4 @@
-name: Workflow-Task-1
+name: Workflow-Task
 on:
   workflow_dispatch:
     inputs:
@@ -43,11 +43,6 @@ jobs:
         with:
           oidc-provider-name: ${{ secrets.OIDC_PROVIDER_NAME }}
           oidc-audience: repo:eladpl97/jfrog_task:ref:refs/heads/*
-      
-      - name: Set false with express in index.js
-        if: env.IMAGE_TAG == 'V2'
-        run: |
-          sed -i -E "s|express\.urlencoded\(\{[[:space:]]*extended:[[:space:]]*true[[:space:]]*\}\)|express.urlencoded({ extended: false })|g" src/index.js
 
       - name: Verify JFrog connectivity
         run: jf rt ping
@@ -70,6 +65,12 @@ jobs:
         with:
           oidc-provider-name: ${{ secrets.OIDC_PROVIDER_NAME }}
           oidc-audience: repo:eladpl97/jfrog_task:ref:refs/heads/*
+
+      - name: Set false with express in index.js
+        if: env.IMAGE_TAG == 'V2'
+        run: |
+          sed -i -E "s|express\.urlencoded\(\{[[:space:]]*extended:[[:space:]]*true[[:space:]]*\}\)|express.urlencoded({ extended: false })|g" src/index.js
+          grep -n "extended: false" src/index.js
 
       - name: Build Docker image
         run: |

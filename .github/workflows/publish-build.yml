@@ -24,8 +24,6 @@ env:
   IMAGE_NAME: my-app
   JF_URL: ${{ vars.JF_URL }}
   NPM_VIRTUAL_REPO: ${{ vars.NPM_VIRTUAL_REPO }}
-  # DOCKER_BUILD_SUMMARY: false
-  # DOCKER_BUILD_RECORD_UPLOAD: false
   JFROG_CLI_LOG_LEVEL: DEBUG
   IMAGE_TAG: ${{ github.event.inputs.docker_tag }}
   JF_REGISTRY: ${{ secrets.JFROG_REGISTRY_URL }}

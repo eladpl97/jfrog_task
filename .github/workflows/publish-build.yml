@@ -10,7 +10,7 @@ on:
         default: V1
         options:
           - V1
-          - V2
+          - V2s
         required: true
 
 permissions:
@@ -77,8 +77,13 @@ jobs:
         run: |
           echo "IMAGE_TAG=V3" >> $GITHUB_ENV
 
-      - name: Print image tag
-        run: echo "Using IMAGE_TAG=$IMAGE_TAG"
+      - name: Check IMAGE_TAG is set
+        run: |
+          if [ -z "${IMAGE_TAG}" ]; then
+            echo "Missing IMAGE_TAG value"
+            exit 1
+          fi
+          echo "IMAGE_TAG is set to: $IMAGE_TAG"
       
       - name: Verify JFrog connectivity
         run: jf rt ping

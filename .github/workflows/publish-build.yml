@@ -4,9 +4,12 @@ on:
     inputs:
       docker_tag:
         description: 'Docker image tag'
-        required: false
-        default: 'V1'
-        type: string
+        type: choice
+        default: V1
+        options:
+          - V1
+          - V2
+        required: true
 
 permissions:
   actions: read
@@ -44,18 +47,7 @@ jobs:
       - name: Set false with express in index.js
         if: env.IMAGE_TAG == 'V2'
         run: |
-          sed -i 's/express.urlencoded({ extended: true })/express.urlencoded({ extended: false })/'src/index.js
-      
-      - name: Commit and push changes
-        if: env.IMAGE_TAG == 'V2'
-        run: |
-           git config user.name "github-actions[bot]"
-           git config user.email "github-actions[bot]@users.noreply.github.com"
-           git add src/index.js
-           git commit -m "fix: set extended false for body-parser CVE mitigation"
-           git push origin HEAD:${{ github.ref_name }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
+          sed -i -E "s|express\.urlencoded\(\{[[:space:]]*extended:[[:space:]]*true[[:space:]]*\}\)|express.urlencoded({ extended: false })|g" src/index.js
 
       - name: Verify JFrog connectivity
         run: jf rt ping

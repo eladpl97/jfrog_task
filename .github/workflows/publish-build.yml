@@ -24,8 +24,8 @@ env:
   IMAGE_NAME: my-app
   JF_URL: ${{ vars.JF_URL }}
   NPM_VIRTUAL_REPO: ${{ vars.NPM_VIRTUAL_REPO }}
-  DOCKER_BUILD_SUMMARY: false
-  DOCKER_BUILD_RECORD_UPLOAD: false
+  # DOCKER_BUILD_SUMMARY: false
+  # DOCKER_BUILD_RECORD_UPLOAD: false
   JFROG_CLI_LOG_LEVEL: DEBUG
   IMAGE_TAG: ${{ github.event.inputs.docker_tag }}
   JF_REGISTRY: ${{ secrets.JFROG_REGISTRY_URL }}
@@ -53,7 +53,7 @@ jobs:
       - name: Build webapp
         run: jf npm ci
 
-  docker-build:   
+  docker-build-scan:   
     runs-on: ubuntu-latest
     needs: [setup]
     steps: 
@@ -78,11 +78,11 @@ jobs:
 
       - name: Push Docker image with build-info
         run: |
-          jf docker push ${{ env.JF_REGISTRY }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} \
-            --build-name=${{ env.IMAGE_NAME }} \
-            --build-number=${{ env.BUILD_NUMBER }}
+          jf docker push ${{ env.JF_REGISTRY }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} # \
+            # --build-name=${{ env.IMAGE_NAME }} \
+            # --build-number=${{ env.BUILD_NUMBER }}
 
       - name: scan build
-        run:  jf build-scan
+        run:  jf build-scan Workflow-Task ${{ env.BUILD_NUMBER }}
 
  

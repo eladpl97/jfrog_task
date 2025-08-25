@@ -97,6 +97,12 @@ jobs:
       - name: Push Docker image with build-info
         run: |
           jf docker push ${{ env.JF_REGISTRY }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+      
+      - name: Collect CI environment variables
+        run: jf rt build-collect-env ${{ env.JFROG_CLI_CI_JOB_ID }} ${{ env.BUILD_NUMBER }}
+
+      - name: Add Git metadata
+        run: jf rt build-add-git ${{ env.JFROG_CLI_CI_JOB_ID }} ${{ env.BUILD_NUMBER }}
 
       - name: scan build
         run:  jf build-scan ${{ env.JFROG_CLI_CI_JOB_ID }} ${{ env.BUILD_NUMBER }}

@@ -10,7 +10,7 @@ on:
         default: V1
         options:
           - V1
-          - V2s
+          - V2
         required: true
 
 permissions:

@@ -24,15 +24,13 @@ env:
   IMAGE_NAME: my-app
   JF_URL: ${{ vars.JF_URL }}
   NPM_VIRTUAL_REPO: ${{ vars.NPM_VIRTUAL_REPO }}
-  # DOCKER_BUILD_SUMMARY: false
-  # DOCKER_BUILD_RECORD_UPLOAD: false
   JFROG_CLI_LOG_LEVEL: DEBUG
   IMAGE_TAG: ${{ github.event.inputs.docker_tag }}
   JF_REGISTRY: ${{ secrets.JFROG_REGISTRY_URL }}
   BUILD_NUMBER: ${{ github.run_number }}
 
 jobs:
-  setup:
+   build-push-scan:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
@@ -54,33 +52,11 @@ jobs:
       - name: Build webapp
         run: jf npm ci
 
-  docker-build-scan:   
-    runs-on: ubuntu-latest
-
-    steps: 
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      # - name: Setup JFrog CLI (OIDC)
-      #   uses: jfrog/setup-jfrog-cli@v4
-      #   with:
-      #     oidc-provider-name: ${{ secrets.OIDC_PROVIDER_NAME }}
-      #     oidc-audience: repo:eladpl97/jfrog_task:ref:refs/heads/*
-
       - name: Set false with express in index.js
         if: env.IMAGE_TAG == 'V2'
         run: |
           sed -i -E "s|express\.urlencoded\(\{[[:space:]]*extended:[[:space:]]*true[[:space:]]*\}\)|express.urlencoded({ extended: false })|g" src/index.js
           grep -n "extended: false" src/index.js
-      
-      - name: Verify JFrog connectivity
-        run: jf rt ping
-
-      - name: Set CLI Config
-        run: jf npm-config --global=true --repo-resolve=${{ env.NPM_VIRTUAL_REPO }} --repo-deploy=${{ env.NPM_VIRTUAL_REPO }}
-
-      - name: Build webapp
-        run: jf npm ci
 
       - name: Build Docker image
         run: |

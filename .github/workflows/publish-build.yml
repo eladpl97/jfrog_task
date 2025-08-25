@@ -81,3 +81,8 @@ jobs:
           jf docker push ${{ env.JF_REGISTRY }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} \
             --build-name=${{ env.IMAGE_NAME }} \
             --build-number=${{ env.BUILD_NUMBER }}
+
+      - name: Push Docker image with build-info
+        run:  jf build-scan
+
+ 

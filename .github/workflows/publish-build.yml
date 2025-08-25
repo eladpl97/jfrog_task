@@ -41,7 +41,6 @@ jobs:
       - name: Setup JFrog CLI
         uses: jfrog/setup-jfrog-cli@v4
         with:
-          disable-auto-build-publish: true
           oidc-provider-name: ${{ secrets.OIDC_PROVIDER_NAME }}
           oidc-audience: repo:eladpl97/jfrog_task:ref:refs/heads/*
 
@@ -64,7 +63,6 @@ jobs:
       - name: Setup JFrog CLI (OIDC)
         uses: jfrog/setup-jfrog-cli@v4
         with:
-          disable-auto-build-publish: false
           oidc-provider-name: ${{ secrets.OIDC_PROVIDER_NAME }}
           oidc-audience: repo:eladpl97/jfrog_task:ref:refs/heads/*
 
@@ -86,6 +84,6 @@ jobs:
           jf docker push ${{ env.JF_REGISTRY }}/${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
 
       - name: scan build
-        run:  jf build-scan Workflow-Task ${{ env.BUILD_NUMBER }} --fail=false
+        run:  jf build-scan Workflow-Task ${{ env.BUILD_NUMBER }}
 
  

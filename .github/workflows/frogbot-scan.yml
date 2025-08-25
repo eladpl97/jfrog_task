@@ -5,9 +5,7 @@ on:
     types: [opened, synchronize] 
   push: 
     branches:
-      - v1
-  # schedule:
-  #   - cron: "25 * * * *"  
+      - baseline/v1
   workflow_dispatch: 
 
 permissions:
@@ -21,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        branch: ["main", "v1"]
+        branch: ["main", "baseline/v1"]
     steps:
       - uses: jfrog/frogbot@v2
         with:

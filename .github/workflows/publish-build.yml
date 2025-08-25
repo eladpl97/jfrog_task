@@ -61,11 +61,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup JFrog CLI (OIDC)
-        uses: jfrog/setup-jfrog-cli@v4
-        with:
-          oidc-provider-name: ${{ secrets.OIDC_PROVIDER_NAME }}
-          oidc-audience: repo:eladpl97/jfrog_task:ref:refs/heads/*
+      # - name: Setup JFrog CLI (OIDC)
+      #   uses: jfrog/setup-jfrog-cli@v4
+      #   with:
+      #     oidc-provider-name: ${{ secrets.OIDC_PROVIDER_NAME }}
+      #     oidc-audience: repo:eladpl97/jfrog_task:ref:refs/heads/*
 
       - name: Set false with express in index.js
         if: env.IMAGE_TAG == 'V2'

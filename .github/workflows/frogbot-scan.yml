@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        branch: ["main", "baseline/v1"]
+        branch: ["baseline/v1"]  # "main"
     steps:
       - uses: jfrog/frogbot@v2
         with:

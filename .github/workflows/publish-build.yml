@@ -32,8 +32,31 @@ env:
   BUILD_NUMBER: ${{ github.run_number }}
 
 jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+
+      - name: Setup JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v4
+        with:
+          disable-auto-build-publish: true
+          oidc-provider-name: ${{ secrets.OIDC_PROVIDER_NAME }}
+          oidc-audience: repo:eladpl97/jfrog_task:ref:refs/heads/*
+
+      - name: Verify JFrog connectivity
+        run: jf rt ping
+
+      - name: Set CLI Config
+        run: jf npm-config --global=true --repo-resolve=${{ env.NPM_VIRTUAL_REPO }} --repo-deploy=${{ env.NPM_VIRTUAL_REPO }}
+
+      - name: Build webapp
+        run: jf npm ci
+
   docker-build-scan:   
     runs-on: ubuntu-latest
+
     steps: 
       - name: Checkout repository
         uses: actions/checkout@v4

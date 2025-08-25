@@ -42,12 +42,12 @@ jobs:
           oidc-audience: repo:eladpl97/jfrog_task:ref:refs/heads/*
       
       - name: Set false with express in index.js
-        if: env.IMAGE_TAG == 'v2'
+        if: env.IMAGE_TAG == 'V2'
         run: |
           sed -i 's/express.urlencoded({ extended: true })/express.urlencoded({ extended: false })/'src/index.js
       
       - name: Commit and push changes
-        if: env.IMAGE_TAG == 'v2'
+        if: env.IMAGE_TAG == 'V2'
         run: |
            git config user.name "github-actions[bot]"
            git config user.email "github-actions[bot]@users.noreply.github.com"

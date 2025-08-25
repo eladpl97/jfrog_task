@@ -64,7 +64,7 @@ jobs:
       - name: Setup JFrog CLI (OIDC)
         uses: jfrog/setup-jfrog-cli@v4
         with:
-          disable-auto-build-publish: true
+          disable-auto-build-publish: false
           oidc-provider-name: ${{ secrets.OIDC_PROVIDER_NAME }}
           oidc-audience: repo:eladpl97/jfrog_task:ref:refs/heads/*
 

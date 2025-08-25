@@ -1,4 +1,4 @@
-name: PR Merge for V2
+name: PR Merge for V3
 on:
   pull_request:
     types: [closed]
@@ -19,31 +19,17 @@ env:
   DOCKER_BUILD_SUMMARY: false
   DOCKER_BUILD_RECORD_UPLOAD: false
   JFROG_CLI_LOG_LEVEL: DEBUG
-  IMAGE_TAG: V2
+  IMAGE_TAG: V3
   JF_REGISTRY: ${{ secrets.JFROG_REGISTRY_URL }}
   BUILD_NUMBER: ${{ github.run_number }}
 
 jobs:
   setup:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true && contains(github.event.pull_request.title, 'express')
+    if: github.event.pull_request.merged == true && contains(github.event.pull_request.title, 'moment')
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v4
-
-      - name: Set false with express in index.js
-        run: |
-          sed -i 's/express.urlencoded({ extended: true })/express.urlencoded({ extended: false })/'src/index.js
-      
-      - name: Commit and push changes
-        run: |
-           git config user.name "github-actions[bot]"
-           git config user.email "github-actions[bot]@users.noreply.github.com"
-           git add src/index.js
-           git commit -m "fix: set extended false for body-parser CVE mitigation"
-           git push origin HEAD:${{ github.ref_name }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
  
       - name: Setup JFrog CLI
         uses: jfrog/setup-jfrog-cli@v4

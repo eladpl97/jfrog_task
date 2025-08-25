@@ -34,6 +34,9 @@ env:
 jobs:
   setup:
     runs-on: ubuntu-latest
+    if: >
+      github.event.pull_request.merged == true &&
+      !startsWith(github.event.pull_request.title, 'Revert ')
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v4

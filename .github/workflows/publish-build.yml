@@ -82,7 +82,11 @@ jobs:
             --build-name=${{ env.IMAGE_NAME }} \
             --build-number=${{ env.BUILD_NUMBER }}
 
-      - name: Push Docker image with build-info
+  build-scan:   
+    runs-on: ubuntu-latest
+    needs: [docker-build]
+    steps:
+      - name: scan build
         run:  jf build-scan
 
  
